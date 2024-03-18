@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Overview</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="clustering_files/libs/clipboard/clipboard.min.js"></script>
+<script src="clustering_files/libs/quarto-html/quarto.js"></script>
+<script src="clustering_files/libs/quarto-html/popper.min.js"></script>
+<script src="clustering_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="clustering_files/libs/quarto-html/anchor.min.js"></script>
+<link href="clustering_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="clustering_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="clustering_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="clustering_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="clustering_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Overview</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The heterogeneity of Alzheimer’s Disease (AD) across neuropathologies, clinical presentations, and progression trajectories presents significant challenges in establishing standardized diagnostics and developing targeted treatment for diverse patient groups.</p>
+<p>Identification of the neuropathology driving different clinical presentations is made difficult by the fact that the hallmark biomarker in AD diagnosis, amyloid-beta (Aβ), does not differ significantly across the AD variants, including amnestic AD and non-amnestic AD such as those with executive function, language, or visual-spatial impairments. However, with recent advancements in positron emission topography (PET) imaging, tau has been highlighted to agree more with the neurodegeneration patterns underlying different clinical subtypes [1].</p>
+<p>Yet, despite the increased application of data-driven methods to characterize brain disease heterogeneity in the past decade, a very limited number of studies have involved tau-PET as a modality in clustering. Additionally, the multitude of methods and parameter selections employed in previous studies complicates the validation of robust AD subtypes among studies [2]. Aside from method and modality, existing clinical trials mostly recruit late-onset AD (LOAD) patients with memory deficits, which limits the heterogeneity represented in the study cohorts [3].</p>
+<p>To address these limitations, this project aims to identify robust AD subtypes based on the topographic distribution of tau by applying robust data-driven clustering methods on baseline tau-PET of sporadic early-onset AD (EOAD) patients from the Longitudinal Early-onset Alzhiermer’s Disease Study (LEADS).</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">'../'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="data-description" class="level1">
+<h1>Data Description</h1>
+<section id="study" class="level3">
+<h3 class="anchored" data-anchor-id="study">Study</h3>
+<p>LEADS is a prospective multisite observational clinical and biomarker study seeking to accomplish comparisons of baseline and longitudinal characteristics of EOAD v.s. LOAD and investigate the contribution of apolipoprotein E (APOE) genotype in EOAD. Similar to the Alzheimer’s Disease Neuroimaging Initiative (ADNI), LEADS incorporates longitudinal clinical and cognitive assessments with imaging and biofluid markers to characterize AD holistically. However, the study recruits participants aged 40-64 and does not exclude AD patients with predominantly non-amnesic presentations.</p>
+</section>
+<section id="subjects" class="level3">
+<h3 class="anchored" data-anchor-id="subjects">Subjects</h3>
+<p>All Subjects meet the following criteria: age between 40 - 64 when consent, not pregnant or lactating, with no lifetime history of other brain disorder, no prior participation in aβ/tau targeted therapeutic trials, no moderate or severe substance abuse, no suicidal behaviors/ideations in the past 12 mo.</p>
+<p>This project includes 379 Aβ positive sporadic (no autosomal AD mutations) EOAD patients and 89 cognitively normal Aβ negative age-matched controls. A subject is assigned to the EOAD cohort if their amyloid PET has both a positive visual read and a global SUVR &gt;= 1.18. If both are negative then assign to control. In the case of discordance between PET quantification and visual read, an additional reader is assigned to provide a tie-breaking visual read that decides the final assignment of the subject.</p>
+</section>
+<section id="tau-pet" class="level3">
+<h3 class="anchored" data-anchor-id="tau-pet">Tau-PET</h3>
+<p>All subjects undergo MRI scan, 18F-Florbetaben Amyloid PET, and 18F-Flortaucipir Tau PET at baseline. Tau-PET images are co-registered to T1 structural MRI images and normalized with respect to the inferior cerebellar gray to derive standardized uptake value ratio (SUVR) images. The parcellations were performed using the Desikan–Killiany atlas, resulting in segmentation into 72 regions. The parcellations were subsequently combined into ten lobar regions of interest (ROIs) - left and right medial temporal lobe (MTL), parietal lobe, occipital lobe, frontal lobe, and temporal lobe. For each ROI, the volume-weighted mean SUVR was calculated, providing quantitative measures of regional tau distributions.</p>
+</section>
+</section>
+<section id="input-preparation" class="level1">
+<h1>Input preparation</h1>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># visit = 1, parc = hemfs_roi - dropped</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dat.drop([<span class="st">'visit'</span>,<span class="st">'roi_full'</span>,<span class="st">'parc'</span>,<span class="st">'ftp_date'</span>],axis<span class="op">=</span><span class="dv">1</span>,inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dat.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">subj</th>
+<th data-quarto-table-cell-role="th">dx</th>
+<th data-quarto-table-cell-role="th">roi</th>
+<th data-quarto-table-cell-role="th">suvr</th>
+<th data-quarto-table-cell-role="th">vol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>LDS0070120</td>
+<td>CN</td>
+<td>L_amygdala</td>
+<td>1.117458</td>
+<td>1818</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>LDS0070166</td>
+<td>EOAD</td>
+<td>L_amygdala</td>
+<td>1.933520</td>
+<td>1159</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Patient count</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> dat.dx.unique():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i <span class="op">+</span> <span class="st">': '</span><span class="op">+</span><span class="bu">str</span>(<span class="bu">len</span>(dat[dat.dx<span class="op">==</span>i].subj.unique())))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CN: 89
+EOAD: 379</code></pre>
+</div>
+</div>
+<p><strong>ROI Specification</strong></p>
+<p>ROI definition is a key step in data preprocessing that could impact the result of clustering. The choice to group them into left and right lobar ROI is informed by previous studies highlighting variations in AD pathology across specific lobes, potential hemispheric laterality in AD clinical variants, and the orthogonality of these lobar regions to disease progression in Braak stages IV–VI [5].</p>
+<p><strong>Lobe Mapping</strong></p>
+<p>Following the grouping of Desikan-Kiliany cortical parcellations into lobar regions [4]:</p>
+<p>Medial temporal lobe: entorhinal cortex, parahippocampal gyrus, fusiform gyrus (temporal pole)</p>
+<p>Tempoeral lobe: superior temporal gyrus, middle temporal gyrus, inferior temporal gyrus, transverse temporal gyrus, (bank)</p>
+<p>Frontal lobe: superior frontal gyrus, middle frontal gyrus, inferior frontal gyrus (pars opercularis, pars triangularis, pars orbitalis), orbitofrontal, precentral gyrus, paracentral lobule (frontal pole)</p>
+<p>Parietal lobe: postcentral gyrus, supramarginal gyrus, superior parietal, inferior parietal, percuneus</p>
+<p>Occipital lobe: lingual gyrus, pericalcarine cortex, cuneus cortex, lateral occipital cortex</p>
+<p>Cingulate (grouped into the above): rostral anterior (frontal), caudal anterior (frontal), posterior (parietal), isthmus (parietal)</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create dict to map parcellations to lobar ROI</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lobe_dict <span class="op">=</span> {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">'L_MTL'</span>: [<span class="st">'L_entorhinal'</span>,<span class="st">'L_amygdala'</span>,<span class="st">'L_hippocampus'</span> ],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">'R_MTL'</span>: [<span class="st">'R_entorhinal'</span>,<span class="st">'R_amygdala'</span>,<span class="st">'R_hippocampus'</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">'L_temporal'</span>: [<span class="st">'L_superiortemporal'</span>, <span class="st">'L_middletemporal'</span>, <span class="st">'L_inferiortemporal'</span>,<span class="st">'L_transversetemporal'</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>               <span class="st">'L_parahippocampal'</span>,<span class="st">'L_fusiform'</span>],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">'R_temporal'</span>: [<span class="st">'R_superiortemporal'</span>, <span class="st">'R_middletemporal'</span>,<span class="st">'R_inferiortemporal'</span>,<span class="st">'R_transversetemporal'</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>               <span class="st">'R_parahippocampal'</span>,<span class="st">'R_fusiform'</span>],</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">'L_frontal'</span>:[<span class="st">'L_superiorfrontal'</span>,<span class="st">'L_rostralmiddlefrontal'</span>,<span class="st">'L_caudalmiddlefrontal'</span>, <span class="co">#middle frontal gyrus</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>             <span class="st">'L_parsopercularis'</span>, <span class="st">'L_parsorbitalis'</span>, <span class="st">'L_parstriangularis'</span>, <span class="co">#inferior frontal gyrus </span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">'L_lateralorbitofrontal'</span>,<span class="st">'L_medialorbitofrontal'</span>, <span class="co">#occipitalfrontal cortex</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">'L_rostralanteriorcingulate'</span>, <span class="st">'L_caudalanteriorcingulate'</span>,<span class="co">#cingulate</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">'L_precentral'</span>,<span class="st">'L_insula'</span>,],</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="st">'R_frontal'</span>:[<span class="st">'R_superiorfrontal'</span>, <span class="st">'R_rostralmiddlefrontal'</span>, <span class="st">'R_caudalmiddlefrontal'</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>             <span class="st">'R_parsopercularis'</span>, <span class="st">'R_parsorbitalis'</span>, <span class="st">'R_parstriangularis'</span>,  </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>             <span class="st">'R_lateralorbitofrontal'</span>,<span class="st">'R_medialorbitofrontal'</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>             <span class="st">'R_rostralanteriorcingulate'</span>,<span class="st">'R_caudalanteriorcingulate'</span>, </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>              <span class="st">'R_precentral'</span>, <span class="st">'R_insula'</span>], <span class="co">#paracentral?</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="st">'L_occipital'</span>:[<span class="st">'L_lateraloccipital'</span>,<span class="st">'L_lingual'</span>,<span class="st">'L_cuneus'</span>,<span class="st">'L_pericalcarine'</span>],</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="st">'R_occipital'</span>:[<span class="st">'R_lateraloccipital'</span>,<span class="st">'R_lingual'</span>,<span class="st">'R_cuneus'</span>,<span class="st">'R_pericalcarine'</span>],</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="st">'L_parietal'</span>:[<span class="st">'L_superiorparietal'</span>,<span class="st">'L_inferiorparietal'</span>,<span class="st">'L_supramarginal'</span>,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>             <span class="st">'L_postcentral'</span>,<span class="st">'L_precuneus'</span>,</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>             <span class="st">'L_posteriorcingulate'</span>,<span class="st">'L_isthmuscingulate'</span>],<span class="co">#cingulate</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="st">'R_parietal'</span>:[<span class="st">'R_superiorparietal'</span>,<span class="st">'R_inferiorparietal'</span>,<span class="st">'R_supramarginal'</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>              <span class="st">'R_postcentral'</span>,<span class="st">'R_precuneus'</span>, </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>             <span class="st">'R_posteriorcingulate'</span>, <span class="st">'R_isthmuscingulate'</span>],</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># use this to subset data for correct ordering!</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>lobes <span class="op">=</span> [<span class="st">'L_MTL'</span>, <span class="st">'R_MTL'</span>, <span class="st">'L_temporal'</span>, <span class="st">'R_temporal'</span>, <span class="st">'L_frontal'</span>, <span class="st">'R_frontal'</span>, </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>         <span class="st">'L_occipital'</span>, <span class="st">'R_occipital'</span>,<span class="st">'L_parietal'</span>, <span class="st">'R_parietal'</span> ]</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>dat[<span class="st">'lobe'</span>] <span class="op">=</span> dat[<span class="st">'roi'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> roi: <span class="bu">next</span>((lobe <span class="cf">for</span> lobe, regions <span class="kw">in</span> lobe_dict.items() <span class="cf">if</span> roi <span class="kw">in</span> regions), <span class="va">None</span>))</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>dat.sort_values(<span class="st">'subj'</span>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">subj</th>
+<th data-quarto-table-cell-role="th">dx</th>
+<th data-quarto-table-cell-role="th">roi</th>
+<th data-quarto-table-cell-role="th">suvr</th>
+<th data-quarto-table-cell-role="th">vol</th>
+<th data-quarto-table-cell-role="th">lobe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>LDS0070120</td>
+<td>CN</td>
+<td>L_amygdala</td>
+<td>1.117458</td>
+<td>1818</td>
+<td>L_MTL</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">23868</td>
+<td>LDS0070120</td>
+<td>CN</td>
+<td>R_lingual</td>
+<td>1.089886</td>
+<td>8735</td>
+<td>R_occipital</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unassigned parcellated region: </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#banks of the superior temporal sculus (temporal), frontal pole (frontal), paracentral (frontal/parietal?), temporal pole (temporal)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>dat[dat.lobe.isnull()].roi.unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>array(['L_bankssts', 'L_frontalpole', 'L_paracentral', 'L_temporalpole',
+       'R_bankssts', 'R_frontalpole', 'R_paracentral', 'R_temporalpole'],
+      dtype=object)</code></pre>
+</div>
+</div>
+<section id="mean-suvr" class="level2">
+<h2 class="anchored" data-anchor-id="mean-suvr">Mean SUVR</h2>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Volume-weighted mean SUVR</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>wdata <span class="op">=</span> dat.dropna().groupby([<span class="st">'subj'</span>, <span class="st">'dx'</span>,  <span class="st">'lobe'</span>]).<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.average(x[<span class="st">'suvr'</span>], weights<span class="op">=</span>x[<span class="st">'vol'</span>])).reset_index(name<span class="op">=</span><span class="st">'mean_suvr'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>wdata.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">subj</th>
+<th data-quarto-table-cell-role="th">dx</th>
+<th data-quarto-table-cell-role="th">lobe</th>
+<th data-quarto-table-cell-role="th">mean_suvr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>LDS0070120</td>
+<td>CN</td>
+<td>L_MTL</td>
+<td>1.212698</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>LDS0070120</td>
+<td>CN</td>
+<td>L_frontal</td>
+<td>1.037903</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># long to wide  </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> wdata.pivot_table(index<span class="op">=</span>[<span class="st">'subj'</span>, <span class="st">'dx'</span>], columns<span class="op">=</span><span class="st">'lobe'</span>, values<span class="op">=</span><span class="st">'mean_suvr'</span>).reset_index()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df.columns.name <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>cn_idx <span class="op">=</span> df.index[df[<span class="st">'dx'</span>] <span class="op">==</span> <span class="st">'CN'</span>]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>eoad_idx <span class="op">=</span> df.index[df[<span class="st">'dx'</span>] <span class="op">==</span> <span class="st">'EOAD'</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>suvr_dat <span class="op">=</span> df.loc[:,lobes].values</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">subj</th>
+<th data-quarto-table-cell-role="th">dx</th>
+<th data-quarto-table-cell-role="th">L_MTL</th>
+<th data-quarto-table-cell-role="th">L_frontal</th>
+<th data-quarto-table-cell-role="th">L_occipital</th>
+<th data-quarto-table-cell-role="th">L_parietal</th>
+<th data-quarto-table-cell-role="th">L_temporal</th>
+<th data-quarto-table-cell-role="th">R_MTL</th>
+<th data-quarto-table-cell-role="th">R_frontal</th>
+<th data-quarto-table-cell-role="th">R_occipital</th>
+<th data-quarto-table-cell-role="th">R_parietal</th>
+<th data-quarto-table-cell-role="th">R_temporal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>LDS0070120</td>
+<td>CN</td>
+<td>1.212698</td>
+<td>1.037903</td>
+<td>1.103603</td>
+<td>1.074372</td>
+<td>1.127232</td>
+<td>1.210549</td>
+<td>1.028599</td>
+<td>1.109314</td>
+<td>1.082730</td>
+<td>1.142007</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>LDS0070166</td>
+<td>EOAD</td>
+<td>1.856240</td>
+<td>2.398487</td>
+<td>2.957153</td>
+<td>3.012157</td>
+<td>2.856721</td>
+<td>1.695600</td>
+<td>2.164095</td>
+<td>2.754564</td>
+<td>2.877221</td>
+<td>2.635381</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The input is stored in the wide format where each column represents the mean SUVR of one of the ten lobar ROIs for a subject (to be compatible with the input format for the brainpainter library) The shape of the input is 468 x 10 to begin with.</p>
+</section>
+<section id="visualize-value-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-value-distribution">Visualize value distribution</h2>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> roi_cluster_violin(data, x, y,roi_name,hue_cat,title_text,labels,strip<span class="op">=</span><span class="va">True</span>,colors <span class="op">=</span> sns.set_palette(<span class="st">'tab20'</span>),<span class="op">**</span>kwargs): </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#each x gets its own violin. hue splits the violin. each roi get its own plot. </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#inner: “box”, “quart”, “point”, “stick”,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the pairs  </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> [</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'L_MTL'</span>, <span class="st">'R_MTL'</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'L_temporal'</span>, <span class="st">'R_temporal'</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'L_frontal'</span>, <span class="st">'R_frontal'</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'L_occipital'</span>, <span class="st">'R_occipital'</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'L_parietal'</span>, <span class="st">'R_parietal'</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">5</span>,figsize<span class="op">=</span>(<span class="dv">26</span>,<span class="dv">6</span>), sharey <span class="op">=</span> <span class="va">True</span>)<span class="co">#, dpi=480)</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (lobe_l, lobe_r) <span class="kw">in</span> <span class="bu">enumerate</span>(pairs):</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">#row = i // 5</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        col <span class="op">=</span> i <span class="op">%</span> <span class="dv">5</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        sns.violinplot(data<span class="op">=</span>data[data[roi_name].isin([lobe_l, lobe_r])], x<span class="op">=</span>x, y<span class="op">=</span>y, hue<span class="op">=</span>hue_cat, </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                    split<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                    fill<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>                    ax<span class="op">=</span>axes[col],palette<span class="op">=</span>colors,<span class="op">**</span>kwargs)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> strip:</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            sns.stripplot(data<span class="op">=</span>data[data[roi_name].isin([lobe_l, lobe_r])], </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>                      x<span class="op">=</span>x, y<span class="op">=</span>y, hue<span class="op">=</span>hue_cat, </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                    dodge<span class="op">=</span><span class="va">True</span>,jitter<span class="op">=</span><span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, size <span class="op">=</span> <span class="dv">4</span>, legend <span class="op">=</span> <span class="va">False</span>,ax<span class="op">=</span>axes[col],palette<span class="op">=</span>colors)<span class="co">#marker='o'</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        axes[col].set_title(lobe_l[<span class="dv">2</span>:],fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        axes[col].set_xlabel(<span class="va">None</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        axes[col].set_ylabel(<span class="va">None</span>)<span class="co">#lobe_l[2:],fontsize=16)</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        axes[col].tick_params(axis<span class="op">=</span><span class="st">'y'</span>, labelsize<span class="op">=</span><span class="dv">16</span>)    </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        axes[col].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, labelsize<span class="op">=</span><span class="dv">16</span>)   </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set legend to None for all subplots except the last one</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">!=</span> <span class="bu">len</span>(pairs):</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>            handles, _ <span class="op">=</span> axes[ col].get_legend_handles_labels()</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>            axes[col].legend().set_visible(<span class="va">False</span>)  </span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a single legend in the last subplot</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].legend(handles, labels, loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    plt.yticks(size<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    plt.suptitle(title_text,fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>roi_cluster_violin(wdata,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                   x <span class="op">=</span> <span class="st">'dx'</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                   y <span class="op">=</span> <span class="st">'mean_suvr'</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                   roi_name <span class="op">=</span> <span class="st">'lobe'</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                   hue_cat <span class="op">=</span> <span class="st">'lobe'</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                   title_text <span class="op">=</span> <span class="st">'Mean SUVR of EOAD vs CN across L/R ROI with quartiles'</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                   labels <span class="op">=</span> [<span class="st">'Left'</span>,<span class="st">'Right'</span>],</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                   strip <span class="op">=</span> <span class="va">True</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                   colors <span class="op">=</span> sns.set_palette(<span class="st">'tab20'</span>),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                   <span class="co">#additional</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                   inner<span class="op">=</span><span class="st">'quart'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The grouped violin plots show that the distribution of mean SUVR values is largely symmetrical between the two hemispheres within CN and EOAD respectively, with slightly higher values in the left hemispheres, as indicated by the quartile lines. In the CN group, extreme outliers are present in all ROIs, resulting in long tails in the violin plot. Moreover, the outlier values are higher in the right hemisphere.</p>
+</section>
+<section id="standardization" class="level2">
+<h2 class="anchored" data-anchor-id="standardization">Standardization</h2>
+<p>Mean SUVR values are standardized in each region w.r.t. to a normal component derived from Guassian Mixture Model-fit, such that the tau z-scores are informative of the disease stage and the tau dispositions are comparable across the ROIs, and in this case also to eliminate the effects of the extreme outliers observed in CN. (Although looking at the mean SUVR distributions, the values are pretty close in ranges across the ROIs.)</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="best-of-gmm-components" class="level3">
+<h3 class="anchored" data-anchor-id="best-of-gmm-components">Best # of GMM components</h3>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n_components_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>) </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>bestk_df <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>[<span class="st">'ROI'</span>, <span class="st">'K'</span>, <span class="st">'AIC'</span>]) </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> roi_idx, roi_data <span class="kw">in</span> <span class="bu">enumerate</span>(suvr_dat.T):  </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    cv_aic_scores <span class="op">=</span> [] <span class="co">#</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    kf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>) <span class="co">#stratified by dx</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> train_index, test_index <span class="kw">in</span> kf.split(roi_data,df.dx.values): </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        X_train, X_test <span class="op">=</span> roi_data[train_index], roi_data[test_index]  </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n_components <span class="kw">in</span> n_components_range:</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>n_components, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            gmm.fit(X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))  </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            means <span class="op">=</span> np.sort(gmm.means_.flatten()) <span class="co">#smaller first</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> n_components <span class="op">==</span> <span class="dv">1</span> :</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>                means <span class="op">=</span> [means[<span class="dv">0</span>],np.nan] <span class="co"># if it's 1 component set to NaN</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            aic_score <span class="op">=</span> gmm.aic(X_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)) </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Store the results for each fold</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            fold_results <span class="op">=</span> pd.DataFrame({<span class="st">'ROI'</span>: lobes[roi_idx],</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">'K'</span>: n_components,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">'AIC'</span>: [aic_score],</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">'mean1'</span>:[means[<span class="dv">0</span>]],</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">'mean2'</span>:[means[<span class="dv">1</span>]]})</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>            bestk_df <span class="op">=</span> pd.concat([bestk_df, fold_results], ignore_index<span class="op">=</span><span class="va">True</span>) </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(bestk_df.shape)<span class="co">#5 components x 10 roi x 5fold = 250 </span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>bestk_df.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(250, 5)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ROI</th>
+<th data-quarto-table-cell-role="th">K</th>
+<th data-quarto-table-cell-role="th">AIC</th>
+<th data-quarto-table-cell-role="th">mean1</th>
+<th data-quarto-table-cell-role="th">mean2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>L_MTL</td>
+<td>1</td>
+<td>31.843984</td>
+<td>1.524820</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>L_MTL</td>
+<td>2</td>
+<td>22.608503</td>
+<td>1.183449</td>
+<td>1.656322</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get best K for each ROI based on lowest mean AIC scores across folds</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mean_aic <span class="op">=</span> bestk_df.groupby([<span class="st">'ROI'</span>,<span class="st">'K'</span>]).mean().reset_index()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>idx_min <span class="op">=</span> mean_aic.groupby(<span class="st">'ROI'</span>)[<span class="st">'AIC'</span>].idxmin()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>bestK <span class="op">=</span> mean_aic.loc[idx_min, [<span class="st">'ROI'</span>, <span class="st">'K'</span>]] </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>bestK.sort_values(<span class="st">'K'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ROI</th>
+<th data-quarto-table-cell-role="th">K</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>L_MTL</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>L_frontal</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">16</td>
+<td>L_parietal</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">21</td>
+<td>L_temporal</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">26</td>
+<td>R_MTL</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">31</td>
+<td>R_frontal</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">41</td>
+<td>R_parietal</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">46</td>
+<td>R_temporal</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>L_occipital</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">37</td>
+<td>R_occipital</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#AIC clustered bar</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">6</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>sns.barplot(data<span class="op">=</span>bestk_df, y<span class="op">=</span><span class="st">'AIC'</span>, hue<span class="op">=</span><span class="st">'K'</span>, x<span class="op">=</span><span class="st">'ROI'</span>,   errorbar<span class="op">=</span><span class="st">'sd'</span>, errwidth<span class="op">=</span><span class="dv">1</span>, palette<span class="op">=</span>sns.color_palette(<span class="st">'pastel'</span>)) </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sns.stripplot(data<span class="op">=</span>bestk_df, y<span class="op">=</span><span class="st">'AIC'</span>, hue<span class="op">=</span><span class="st">'K'</span>, x<span class="op">=</span><span class="st">'ROI'</span>, dodge<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, size<span class="op">=</span><span class="dv">4</span>, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'# of Components (K)'</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'AIC'</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'AIC of GMM Fit using Different # of Components (Mean ± SD, CV fold scores) across ROIs'</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'K'</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>plt.show() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/linlin/Library/Python/3.9/lib/python/site-packages/seaborn/categorical.py:166: FutureWarning: Setting a gradient palette using color= is deprecated and will be removed in version 0.13. Set `palette='dark:gray'` for same effect.
+  warnings.warn(msg, FutureWarning)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>For each ROI, a gaussian mixture model is fitted on the mean SUVR data to define a normal component (noise) and a abnormal component. The number of components are decided by cross-validated Akaike information criteria (AIC). In most ROIs, the distribution of mean SUVR follow a 2-GMM, one for normal and the other for abnormal tau levels. The exceptions are the occipital ROIs where 3 components give slightly better fit.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_mixture(gmm, roi_data, show_legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    sns.set_palette(<span class="st">'tab10'</span>) </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        ax <span class="op">=</span> plt.gca() </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Whole mixture</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.linspace(<span class="bu">min</span>(roi_data), <span class="bu">max</span>(roi_data), <span class="dv">1000</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    logprob <span class="op">=</span> gmm.score_samples(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    pdf <span class="op">=</span> np.exp(logprob) </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># indiviudal component</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> gmm.predict_proba(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    pdf_individual <span class="op">=</span> weights <span class="op">*</span> pdf[:, np.newaxis]  </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># data hist</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    ax.hist(roi_data, <span class="dv">30</span>, density<span class="op">=</span><span class="va">True</span>, histtype<span class="op">=</span><span class="st">'stepfilled'</span>,color<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># whole pdf</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, pdf, <span class="st">'-k'</span>, label<span class="op">=</span><span class="st">'Mixture PDF'</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># compoennt pdf</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, pdf_individual, <span class="st">'--'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> show_legend:</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        ax.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>max_c <span class="op">=</span> <span class="dv">3</span> <span class="co">#max num of component starting from 1</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [<span class="st">'R_occipital'</span>,<span class="st">'L_occipital'</span>] <span class="co"># specify roi to plot</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> roi <span class="kw">in</span> names:</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    roi_idx <span class="op">=</span> lobes.index(roi)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    roi_data <span class="op">=</span> suvr_dat[:, roi_idx]   </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    roibestk <span class="op">=</span> bestK[bestK.ROI <span class="op">==</span> roi].K.values[<span class="dv">0</span>]</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    models <span class="op">=</span> [GaussianMixture(n_components<span class="op">=</span>k).fit(roi_data.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)) <span class="cf">for</span> k <span class="kw">in</span> np.arange(max_c) <span class="op">+</span> <span class="dv">1</span>]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    _, axes <span class="op">=</span> plt.subplots(<span class="bu">int</span>(np.ceil(max_c<span class="op">/</span><span class="dv">3</span>)), <span class="dv">3</span>, figsize<span class="op">=</span>np.array([<span class="dv">3</span>,<span class="bu">int</span>(np.ceil(max_c<span class="op">/</span><span class="dv">3</span>))])<span class="op">*</span><span class="dv">3</span>, dpi<span class="op">=</span><span class="dv">100</span>,sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> gmm, ax <span class="kw">in</span> <span class="bu">zip</span>(models, axes.ravel()):</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        plot_mixture(gmm, roi_data, show_legend<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> idx<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f'k=</span><span class="sc">{</span>gmm<span class="sc">.</span>n_components<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        plt.suptitle(<span class="ss">f'1-3 component GMM fit on mean SUVR in </span><span class="sc">{</span>roi<span class="sc">}</span><span class="ss"> (Best: K = </span><span class="sc">{</span>roibestk<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># to set label</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> idx <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>            ax.set_xlabel(<span class="st">'mean SUVR'</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> idx <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            ax.set_ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="visualize-gmm-fit-in-each-roi" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-gmm-fit-in-each-roi">Visualize GMM-fit in each ROI</h3>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> annotated_roi_dist(data, roi, stat <span class="op">=</span> <span class="st">'density'</span>,dattype <span class="op">=</span> <span class="st">'mean SUVR'</span>, gmmfit<span class="op">=</span><span class="va">False</span>, separate<span class="op">=</span><span class="va">True</span>, annotate<span class="op">=</span><span class="va">True</span>, cn_include <span class="op">=</span> <span class="va">True</span>,<span class="co">#whether it's gmm fitted, whether separately colored CN and EOAD, whether included CN</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                  ax<span class="op">=</span><span class="va">None</span>, colors<span class="op">=</span>sns.color_palette(<span class="st">'tab10'</span>), </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                  rois<span class="op">=</span>lobes, eoad_idx<span class="op">=</span>eoad_idx, cn_idx<span class="op">=</span>cn_idx, dx<span class="op">=</span>df.dx,<span class="op">**</span>kwargs):</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        _, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    offset <span class="op">=</span> (ax.get_xlim()[<span class="dv">1</span>] <span class="op">-</span> ax.get_xlim()[<span class="dv">0</span>]) <span class="op">*</span> <span class="fl">0.01</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    roi_data <span class="op">=</span> data[:, rois.index(roi)] </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> roi <span class="op">==</span> <span class="st">'L_occipital'</span> <span class="kw">or</span> roi <span class="op">==</span> <span class="st">'R_occipital'</span>:</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        k <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        k <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    roi_df <span class="op">=</span> pd.DataFrame({<span class="st">'roi'</span>:roi_data,<span class="st">'dx'</span>:dx}) </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gmm component or cn/eoad stats?</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> gmmfit:</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        colors <span class="op">=</span> sns.color_palette(<span class="st">"Accent"</span>, <span class="dv">8</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        description <span class="op">=</span> <span class="st">'for 1st/2nd components'</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># gmm fit</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        gmm.fit(roi_data.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># mean,sd, sorted by first component = smaller mean </span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        sorted_idx <span class="op">=</span> np.argsort(gmm.means_.flatten())</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        means <span class="op">=</span> np.sort(gmm.means_.flatten())</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>        stds <span class="op">=</span> np.sqrt(gmm.covariances_.flatten())[sorted_idx]   </span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># plot overall pdf</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> np.linspace(roi_data.<span class="bu">min</span>(), roi_data.<span class="bu">max</span>(), <span class="dv">1000</span>) </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        pdf <span class="op">=</span> np.exp(gmm.score_samples(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))) </span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        plt.plot(x, pdf, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)  </span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># plot component pdf</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        weights <span class="op">=</span> gmm.predict_proba(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>        pdf_individual <span class="op">=</span> weights <span class="op">*</span> pdf[:, np.newaxis] </span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(pdf_individual.shape[<span class="dv">1</span>]):</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>            plt.plot(x, pdf_individual[:,i], <span class="st">'--'</span>,color<span class="op">=</span>colors[i])</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># plot intersection line</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>        <span class="bu">filter</span> <span class="op">=</span> (x <span class="op">&lt;</span> means[<span class="dv">1</span>]) <span class="op">&amp;</span> (x <span class="op">&gt;</span> means[<span class="dv">0</span>])</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>        difference <span class="op">=</span> np.<span class="bu">abs</span>(pdf_individual[:, <span class="dv">0</span>][<span class="bu">filter</span>]  <span class="op">-</span> pdf_individual[:, <span class="dv">1</span>][<span class="bu">filter</span>])<span class="co">#between the means of the 2 components</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>        intersection <span class="op">=</span> x[<span class="bu">filter</span>][np.argmin(difference)]  </span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>        ax.axvline(intersection, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>,label<span class="op">=</span><span class="st">'intersection'</span>)</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>        ax.text(intersection<span class="op">+</span>offset, ax.get_ylim()[<span class="dv">1</span>]<span class="op">*</span><span class="fl">0.8</span>, <span class="ss">f'</span><span class="sc">{</span>intersection<span class="sc">:.2f}</span><span class="ss">'</span>, color<span class="op">=</span><span class="st">'red'</span>, ha<span class="op">=</span><span class="st">'left'</span>,fontsize<span class="op">=</span><span class="dv">14</span>)    </span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cn_include:</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>            description <span class="op">=</span> <span class="st">'for CN/EOAD'</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>            means <span class="op">=</span> [np.mean(roi_data[cn_idx]), np.mean(roi_data[eoad_idx])]</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>            stds <span class="op">=</span> [np.std(roi_data[cn_idx]), np.std(roi_data[eoad_idx])]</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>            description <span class="op">=</span> <span class="st">'for EOAD only'</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">#separately color cn/eoad?</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> separate:</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>        sns.histplot(roi_df, x<span class="op">=</span><span class="st">'roi'</span>, hue<span class="op">=</span><span class="st">'dx'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, stat<span class="op">=</span>stat, multiple<span class="op">=</span><span class="st">'stack'</span>,color<span class="op">=</span>colors, ax<span class="op">=</span>ax,<span class="op">**</span>kwargs)</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>        sns.histplot(roi_df, x<span class="op">=</span><span class="st">'roi'</span>, color<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, stat<span class="op">=</span>stat, multiple<span class="op">=</span><span class="st">'stack'</span>, ax<span class="op">=</span>ax,<span class="op">**</span>kwargs)</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> annotate:</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>            ax.axvline(means[i], color<span class="op">=</span>colors[i], linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>            ax.axvspan(means[i] <span class="op">-</span> stds[i], means[i] <span class="op">+</span> stds[i], color<span class="op">=</span>colors[i], alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> (gmmfit <span class="kw">and</span> i <span class="op">==</span> <span class="dv">0</span>):</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>                ax.text(means[i] <span class="op">+</span> offset, ax.get_ylim()[<span class="dv">1</span>] <span class="op">*</span> <span class="fl">0.96</span>, <span class="ss">f'</span><span class="sc">{</span>means[i]<span class="sc">:.2f}</span><span class="ss"> ± </span><span class="sc">{</span>stds[i]<span class="sc">:.2f}</span><span class="ss">'</span>, color<span class="op">=</span>colors[i], ha<span class="op">=</span><span class="st">'left'</span>,fontsize<span class="op">=</span><span class="dv">14</span>)    </span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f'</span><span class="sc">{</span>roi<span class="sc">}</span><span class="ss"> (μ±σ </span><span class="sc">{</span>description<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>        ax.set_xlabel(<span class="ss">f'</span><span class="sc">{</span>dattype<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>        ax.set_ylabel(<span class="st">'Density'</span>) </span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># if share axes for all, for stat = density, sharex for all set to 0, 50, sharey for all set to 0, 0.17</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">2</span>)):</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">6</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Subplot for left</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    ax1 <span class="op">=</span> plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    annotated_roi_dist(data <span class="op">=</span> suvr_dat, roi<span class="op">=</span>lobes[i], dattype<span class="op">=</span><span class="st">'mean SUVR'</span>, gmmfit<span class="op">=</span><span class="va">True</span>, kde<span class="op">=</span><span class="va">False</span>, ax <span class="op">=</span> ax1,binwidth<span class="op">=</span><span class="fl">0.05</span>)<span class="co">#,stat='count'</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        ax1.legend().set_visible(<span class="va">None</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Subplot for right</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    ax2 <span class="op">=</span> plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>,sharex<span class="op">=</span>ax1,sharey<span class="op">=</span>ax1) <span class="co">#add this for same y axis. or sharex</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    annotated_roi_dist(data <span class="op">=</span> suvr_dat, roi <span class="op">=</span> lobes[i<span class="op">+</span><span class="dv">1</span>], dattype <span class="op">=</span> <span class="st">'mean SUVR'</span>,gmmfit<span class="op">=</span><span class="va">True</span>,kde<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>ax2,binwidth<span class="op">=</span><span class="fl">0.05</span>)<span class="co">#stat='count',</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    ax2.legend().set_visible(<span class="va">None</span>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-18-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-18-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-18-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-18-output-5.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The above figure shows the mean and standard deviation of the first and second component of the mean SUVR values as well as the intersection of the density functions of the two components which could be seen as a ROI-specific abnormality threshold.</p>
+</section>
+<section id="standardize-w.r.t.-1st-component" class="level3">
+<h3 class="anchored" data-anchor-id="standardize-w.r.t.-1st-component">Standardize w.r.t. 1st component</h3>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gmm1mean <span class="op">=</span> []</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>gmm1std <span class="op">=</span> [] </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>gmm_data <span class="op">=</span> suvr_dat.copy()</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> roi <span class="kw">in</span> lobes:</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    roi_idx <span class="op">=</span> lobes.index(roi) </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> bestK.loc[bestK.ROI<span class="op">==</span> roi,<span class="st">'K'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    gmm_model <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fit GMM to the column data/a specific roi</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    gmm_model.fit(gmm_data[:, roi_idx].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)) </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the means of the two components</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> gmm_model.means_.flatten()  </span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sort it by smaller mean = first component</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    c1_idx <span class="op">=</span> np.argmin(means)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    std <span class="op">=</span> np.sqrt(gmm_model.covariances_[c1_idx])[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> means[c1_idx]</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    gmm1mean.append(mean)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    gmm1std.append(std)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#standardize</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    gmm_data[:, roi_idx] <span class="op">=</span> (gmm_data[:, roi_idx] <span class="op">-</span> mean)<span class="op">/</span>std</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gmm_ctrl <span class="op">=</span> gmm_data[cn_idx]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>gmm_eoad <span class="op">=</span> gmm_data[eoad_idx]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="clustering" class="level1">
+<h1>Clustering</h1>
+<p>method implementation from sklearn [6]</p>
+<p>The clustering is only performed on EOAD data.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>gmm_eoad_df <span class="op">=</span> pd.DataFrame(gmm_eoad,columns <span class="op">=</span> lobes)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>gmm_eoad_df.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">L_MTL</th>
+<th data-quarto-table-cell-role="th">R_MTL</th>
+<th data-quarto-table-cell-role="th">L_temporal</th>
+<th data-quarto-table-cell-role="th">R_temporal</th>
+<th data-quarto-table-cell-role="th">L_frontal</th>
+<th data-quarto-table-cell-role="th">R_frontal</th>
+<th data-quarto-table-cell-role="th">L_occipital</th>
+<th data-quarto-table-cell-role="th">R_occipital</th>
+<th data-quarto-table-cell-role="th">L_parietal</th>
+<th data-quarto-table-cell-role="th">R_parietal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>6.811265</td>
+<td>4.341386</td>
+<td>28.987957</td>
+<td>23.137703</td>
+<td>18.764924</td>
+<td>17.270739</td>
+<td>21.190565</td>
+<td>29.283010</td>
+<td>25.424490</td>
+<td>28.447762</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1.526507</td>
+<td>0.660932</td>
+<td>19.465595</td>
+<td>16.764330</td>
+<td>9.156001</td>
+<td>9.463049</td>
+<td>11.091018</td>
+<td>13.495515</td>
+<td>17.842976</td>
+<td>19.441030</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="kmeans" class="level2">
+<h2 class="anchored" data-anchor-id="kmeans">KMeans</h2>
+<p>KMeans is a distance-based general-purpose clustering algorithm that assumes all clusters have equal variance and are convex and isotropic. The algorithm aims to minimize the inertia, or within-in-cluster sum-of-squares like the sum of Euclidean distances between points in a cluster to the mean of the cluster, such that the points within the same cluster are as homogenized/coherent as possible. When the dimension of the data is high (in this case we have 10), the distance might be inflated. While Principle Component Analysis or other dimension reduction techniques might solve this problem it also leads to less interpretable clusters because the axes would be principle components instead of the original variables.</p>
+<p>KMeans would be fast on the amount of data in this project but the algorithm is sensitive to initializations and the convergence might be to a local minimum only.</p>
+<p>The number of clusters needs to be pre-determined and which has a lot of nuisance to it like what metrics are used to optimize.</p>
+<p>In sklearn’s implementation, there are 1. init, which determines how is the cluster centers are initiated. (using) 2. max_iter, max. number of iterations for each run. (using default = 300) 3. tol, if the improvement in metric is below this value it’s deemed as convergence. (using default = 1e-4) 4. n_init, the number of times alg is run with different starting centers.</p>
+<p>For initalization, again using the default k-means++ which sample different starting centroids based on the empirical probability distribution of the points’ distribution to the overall intertia.</p>
+<p>KMeans/KMedians are rarely used in past studies.</p>
+<section id="cluster-determination" class="level3">
+<h3 class="anchored" data-anchor-id="cluster-determination">cluster# determination</h3>
+<p>Determine by elbow method showing inertia + optimal silhouette score, which is a metric that measures how similar a point is to its cluster (cohesion) than to other clusters (separation).</p>
+<p>The silhouette coefficient for a point is calculated as:</p>
+<p><i>(mean nearest cluster distance - mean intra-cluster distance) / max of the two</i></p>
+<p>where mean nearest cluster distance is the avg. distance between the point and points in the nearest cluster (defined by min. distance between centers) and the mean intra-cluster distance is the avg. distance between the point and other points in the same cluster</p>
+<p>The silhouette score is the mean value of all points, ranging from -1 to 1, and a higher silhouette score represents better-defined clusters.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.cm <span class="im">as</span> cm</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_samples, silhouette_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>silhouettes <span class="op">=</span> []</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>inertias <span class="op">=</span> []</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_clusters <span class="kw">in</span> ks:</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fit KMeans clustering model</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>n_clusters, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="st">'auto'</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    cluster_labels <span class="op">=</span> km.fit_predict(gmm_eoad)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate silhouette score</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    savg <span class="op">=</span> silhouette_score(gmm_eoad, cluster_labels)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    silhouettes.append(savg)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate inertia</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    inertia <span class="op">=</span> km.inertia_</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    inertias.append(inertia)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fig, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  inertia left axis</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>color <span class="op">=</span> <span class="st">'tab:red'</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'Number of Clusters'</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Inertia'</span>, color<span class="op">=</span>color)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>ax1.plot(ks, inertias, marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span>color, label<span class="op">=</span><span class="st">'Inertia'</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>ax1.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, labelcolor<span class="op">=</span>color)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  silhouette score right axis</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax1.twinx()</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>color <span class="op">=</span> <span class="st">'tab:blue'</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Silhouette Score'</span>, color<span class="op">=</span>color)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>ax2.plot(ks, silhouettes, marker<span class="op">=</span><span class="st">'x'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, color<span class="op">=</span>color, label<span class="op">=</span><span class="st">'Silhouette Score'</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, labelcolor<span class="op">=</span>color)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>fig.legend(loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Silhouette Score and Inertia vs Number of Clusters'</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>While the graph does not show a clear elbow, looking at the silouette score perhaps 5 is a good number.</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> gmm_eoad   </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>range_n_clusters <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">12</span>))</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, n_clusters <span class="kw">in</span> <span class="bu">enumerate</span>(range_n_clusters):</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    row_idx <span class="op">=</span> idx <span class="op">//</span> <span class="dv">3</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    col_idx <span class="op">=</span> idx <span class="op">%</span> <span class="dv">3</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    ax1 <span class="op">=</span> axs[row_idx, col_idx]</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    ax1.set_xlim([<span class="op">-</span><span class="fl">0.1</span>, <span class="dv">1</span>])</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    ax1.set_ylim([<span class="dv">0</span>, <span class="bu">len</span>(X) <span class="op">+</span> (n_clusters <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">10</span>])</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    clusterer <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>n_clusters, random_state<span class="op">=</span><span class="dv">42</span>, n_init <span class="op">=</span> <span class="st">'auto'</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    cluster_labels <span class="op">=</span> clusterer.fit_predict(X)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    silhouette_avg <span class="op">=</span> silhouette_score(X, cluster_labels)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"For n_clusters ="</span>, n_clusters, <span class="st">"The average silhouette_score is :"</span>, silhouette_avg)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    sample_silhouette_values <span class="op">=</span> silhouette_samples(X, cluster_labels)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    y_lower <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_clusters):</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>        ith_cluster_silhouette_values <span class="op">=</span> sample_silhouette_values[cluster_labels <span class="op">==</span> i]</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>        ith_cluster_silhouette_values.sort()</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>        size_cluster_i <span class="op">=</span> ith_cluster_silhouette_values.shape[<span class="dv">0</span>]</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>        y_upper <span class="op">=</span> y_lower <span class="op">+</span> size_cluster_i</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>        color <span class="op">=</span> cm.nipy_spectral(<span class="bu">float</span>(i) <span class="op">/</span> n_clusters)</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>        ax1.fill_betweenx(</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>            np.arange(y_lower, y_upper),</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>            <span class="dv">0</span>,</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>            ith_cluster_silhouette_values,</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>            facecolor<span class="op">=</span>color,</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>            edgecolor<span class="op">=</span>color,</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>        ax1.text(<span class="op">-</span><span class="fl">0.05</span>, y_lower <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> size_cluster_i, <span class="bu">str</span>(i))</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>        y_lower <span class="op">=</span> y_upper <span class="op">+</span> <span class="dv">10</span></span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">"n_clusters = </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(n_clusters))</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>    ax1.set_xlabel(<span class="st">"The silhouette coefficient values"</span>)</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>    ax1.set_ylabel(<span class="st">"Cluster label"</span>)</span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>    ax1.axvline(x<span class="op">=</span>silhouette_avg, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>    ax1.set_yticks([])</span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>    ax1.set_xticks([<span class="op">-</span><span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="dv">1</span>])</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>plt.suptitle(</span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Silhouette analysis for KMeans clustering on sample data with varying n_clusters"</span>,</span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">"bold"</span>,</span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>For n_clusters = 2 The average silhouette_score is : 0.3735398934204118
+For n_clusters = 3 The average silhouette_score is : 0.3251433353738214
+For n_clusters = 4 The average silhouette_score is : 0.26739227429584234
+For n_clusters = 5 The average silhouette_score is : 0.2758823751604182
+For n_clusters = 6 The average silhouette_score is : 0.2540668880561665
+For n_clusters = 7 The average silhouette_score is : 0.23812148057856744</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-25-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In each of the silhouette plots, all clusters have maximum silhouette scores above the average across the clusters (red dotted line). However, as the number of clusters increases beyond 4 there is a cluster having more data points than the rest which are mostly uniform in size (width of the bar).</p>
+</section>
+<section id="fitting" class="level3">
+<h3 class="anchored" data-anchor-id="fitting">fitting</h3>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>bestkm <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, n_init<span class="op">=</span><span class="st">'auto'</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>gmm_eoad_df[<span class="st">'kmm_lab'</span>] <span class="op">=</span> bestkm.fit(gmm_eoad).labels_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="hierarchical-clustering" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchical-clustering">Hierarchical Clustering</h2>
+<p>Hierarchical clustering builds a hierarchy of clusters without having a fixed number of clusters, unlike KMeans. The final number is decided by selecting a cut at the hierarchy tree (Dendrogram).</p>
+<p>There are two general types of hierarchical clustering:</p>
+<ul>
+<li><p>Agglomerative: It starts with every data point as a cluster and merges the most similar pairs of data points/clusters until all belong to one cluster.</p></li>
+<li><p>Divisive: It starts with a single cluster and recursively splits the clusters into subclusters based on dissimilarity until a single data point is a cluster.</p></li>
+</ul>
+<p>The difference in clusters could be introduced via the distance measure for dissimilarity/similarity and how the cut is decided (this is usually done arbitrarily by combining eyeballing the dendrogram + background knowledge e.g.&nbsp;what number of clusters are interpretable).</p>
+<p>The algorithm does not assume equal variance or convex clusters, which allows more flexible cluster shapes. Also, there is no need to pre-specify the number of clusters; the initializations are either agglomerative/divisive. However, it is computationally more complex (especially divisive which is usually implemented as heuristic-bisecting KMeans) can be more sensitive to outliers compared to KMeans.</p>
+<p>In sklearn’s implementation (for agglomerative), there are:</p>
+<ol type="1">
+<li><p>metric: distance (using default Euclidean)</p></li>
+<li><p>linkage: determines how the clusters are merged together when going up the tree. ward is the most widely used which minimizes the merged cluster variance. other options include: average = average distance among pairs of points from the two clusters to be merged; complete = maximum distances among pairs; single: minimum. (using default ward)</p></li>
+<li><p>distance_threshold and n_clusters: can be None so it computes the full tree till all points are merged into one. or can alternatively specify a threshold/n_clusters (either one, the other is None) beyond which the clusters would not be merged.</p></li>
+</ol>
+<p>The method (agglomerative hierarchical clustering) is among the most applied in previous studies, perhaps due to the assumption of how tau accumulates in the brain: tau pathology tends to start in certain regions first, and once it reaches a certain level in that region, it spreads to involve other regions. Thus, it is reasonable to think that at each level of the hierarchy, the patients belonging to the same clusters shared similarly affected regions, and the hierarchical structure reflects the progression of tau pathology. Although it is usually left undiscussed how the temporal and spatial heterogeneity are disentangled in this case, that is, two patients belonging to the same cluster could either be a result of them belonging to the same subtype (e.g., trajectories of regions being affected are the same), or them belonging to the same stage (e.g., different trajectories, but both at late stages so most regions are affected - at saturated tau level for most regions).</p>
+<section id="cluster-determination-1" class="level3">
+<h3 class="anchored" data-anchor-id="cluster-determination-1">cluster# determination</h3>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> AgglomerativeClustering</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span>  scipy.cluster.hierarchy <span class="im">import</span> dendrogram, linkage</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>agg <span class="op">=</span> AgglomerativeClustering()</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>agg_lab <span class="op">=</span> agg.fit_predict(gmm_eoad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>linked <span class="op">=</span> linkage(gmm_data, method<span class="op">=</span><span class="st">'ward'</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>dendrogram(linked,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>           ax<span class="op">=</span>ax,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>           orientation<span class="op">=</span><span class="st">'top'</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>           distance_sort<span class="op">=</span><span class="st">'descending'</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>           show_leaf_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>cut_point <span class="op">=</span> <span class="dv">100</span>   </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(y<span class="op">=</span>cut_point, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Cut point'</span>)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Hierarchical Clustering Dendrogram'</span>)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Subjects'</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Distance'</span>)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>ax.set_xticks([]) <span class="co">#rm subject labels</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="clustering_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="fitting-1" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-1">fitting</h3>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>bestAgg <span class="op">=</span> AgglomerativeClustering(n_clusters<span class="op">=</span><span class="dv">5</span>) </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>gmm_eoad_df[<span class="st">'agg_lab'</span>] <span class="op">=</span> bestAgg.fit_predict(gmm_eoad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="compare-silhouette-scores" class="level2">
+<h2 class="anchored" data-anchor-id="compare-silhouette-scores">Compare silhouette scores</h2>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>kmeans_silhouette <span class="op">=</span> silhouette_score(gmm_eoad, gmm_eoad_df.kmm_lab)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>agglomerative_silhouette <span class="op">=</span> silhouette_score(gmm_eoad, gmm_eoad_df.agg_lab)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Silhouette Score for KMeans clustering:"</span>, kmeans_silhouette)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Silhouette Score for Agglomerative clustering:"</span>, agglomerative_silhouette)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Silhouette Score for KMeans clustering: 0.2758823751604182
+Silhouette Score for Agglomerative clustering: 0.23897107412243437</code></pre>
+</div>
+</div>
+</section>
+<section id="cluster-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="cluster-visualization">Cluster visualization</h2>
+<p>tau topography, using the brainpainter library https://github.com/razvanmarinescu/brain-coloring</p>
+</section>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Step(s)</h1>
+<p>1 Sensitivity analysis w/ varying ROI definition and standardization method</p>
+<p>2 Cluster characterization with other clinical/demographic variables</p>
+<p>3 Evaluate other unsuperivsed learning algorithms (e.g., Louvain’s method, mixture of experts, latent dirichlet allocation, non-negative matrix factorization among some other popular choices) and COMPARE derived clusters</p>
+<p>4 Dimensionality reduction? (t-SNE, UMAP, PCA, SOM)</p>
+</section>
+<section id="citations" class="level1">
+<h1>Citations</h1>
+<p>[1] La Joie R, Visani AV, Lesman-Segev OH, Baker SL, Edwards L, Iaccarino L, Soleimani-Meigooni DN, Mellinger T, Janabi M, Miller ZA, Perry DC, Pham J, Strom A, Gorno-Tempini ML, Rosen HJ, Miller BL, Jagust WJ, Rabinovici GD. Association of APOE4 and Clinical Variability in Alzheimer Disease With the Pattern of Tau- and Amyloid-PET. Neurology. 2021 Feb 2;96(5):e650-e661. doi: 10.1212/WNL.0000000000011270. Epub 2020 Dec 1. PMID: 33262228; PMCID: PMC7884991.</p>
+<p>[2] Chen P, Zhang S, Zhao K, Kang X, Rittman T, Liu Y. Robustly uncovering the heterogeneity of neurodegenerative disease by using data-driven subtyping in neuroimaging: A review. Brain Res. 2024 Jan 15;1823:148675. doi: 10.1016/j.brainres.2023.148675. Epub 2023 Nov 17. PMID: 37979603.</p>
+<p>[3] Apostolova LG, Aisen P, Eloyan A, Fagan A, Fargo KN, Foroud T, Gatsonis C, Grinberg LT, Jack CR Jr, Kramer J, Koeppe R, Kukull WA, Murray ME, Nudelman K, Rumbaugh M, Toga A, Vemuri P, Trullinger A, Iaccarino L, Day GS, Graff-Radford NR, Honig LS, Jones DT, Masdeu J, Mendez M, Musiek E, Onyike CU, Rogalski E, Salloway S, Wolk DA, Wingo TS, Carrillo MC, Dickerson BC, Rabinovici GD; LEADS Consortium. The Longitudinal Early-onset Alzheimer’s Disease Study (LEADS): Framework and methodology. Alzheimers Dement. 2021 Dec;17(12):2043-2055. doi: 10.1002/alz.12350. Epub 2021 May 21. PMID: 34018654; PMCID: PMC8939858.</p>
+<p>[4] Desikan, R.S., Segonne, F., Fischl, B., Quinn, B.T., Dickerson, B.C., Blacker, D., Buckner, R.L., Dale, A.M., Maguire, R.P., Hyman, B.T., Albert, M.S., Killiany, R.J., 2006. An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. Neuroimage 31, 968-980.</p>
+<p>[5] Vogel, J.W., Young, A.L., Oxtoby, N.P. et al.&nbsp;Four distinct trajectories of tau deposition identified in Alzheimer’s disease. Nat Med 27, 871–881 (2021). https://doi.org/10.1038/s41591-021-01309-6</p>
+<p>[6] Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp.&nbsp;2825-2830, 2011.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
