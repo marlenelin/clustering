@@ -1,0 +1,108 @@
+
+\documentclass[11pt,a4paper]{report}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{plotmarks}
+\usepackage{amsmath,graphicx}
+\usepackage{epstopdf}
+\usepackage[font=normal,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{scalefnt}
+
+% margin size
+\usepackage[margin=1in]{geometry}
+%\documentclass[border=2pt,tikz]{standalone}
+\usetikzlibrary{positioning}
+
+\newcommand{\scl}{0.06}
+
+\begin{document}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_ag_1.0.png}};
+      
+    \node[block,above=of 0] {ag 1.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_ag_2.0.png}};
+      
+    \node[block,above=of 0] {ag 2.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_ag_3.0.png}};
+      
+    \node[block,above=of 0] {ag 3.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_ag_4.0.png}};
+      
+    \node[block,above=of 0] {ag 4.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_ag_5.0.png}};
+      
+    \node[block,above=of 0] {ag 5.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_km_1.0.png}};
+      
+    \node[block,above=of 0] {km 1.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_km_2.0.png}};
+      
+    \node[block,above=of 0] {km 2.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_km_3.0.png}};
+      
+    \node[block,above=of 0] {km 3.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_km_4.0.png}};
+      
+    \node[block,above=of 0] {km 4.0};
+    \end{tikzpicture}\tikzset{block/.style={node distance=-1pt, line width=1pt}}
+\begin{tikzpicture}
+\centering
+ \node[block] (0) {\includegraphics[scale=\scl]{./cortical-outer-right-hemisphere_km_5.0.png}};
+      
+    \node[block,above=of 0] {km 5.0};
+    \end{tikzpicture}\begin{tikzpicture}[scale=0.9,auto,swap]
+    \definecolor{color_0}{rgb}{1, 1, 1}
+    \definecolor{color_1}{rgb}{1, 1, 0}
+    \definecolor{color_2}{rgb}{1, 0.4, 0}
+    \definecolor{color_3}{rgb}{1, 0, 0}
+    \definecolor{color_4}{rgb}{0.471, 0.318, 0.663}
+    \shade[bottom color=color_0,top color=color_1] (0,0) rectangle (0.5,2.01);
+    
+    \shade[bottom color=color_1,top color=color_2] (0,2) rectangle (0.5,4.01);
+    
+    \shade[bottom color=color_2,top color=color_3] (0,4) rectangle (0.5,6.01);
+    
+    \shade[bottom color=color_3,top color=color_4] (0,6) rectangle (0.5,8.01);
+     
+    \draw (0,0) -- (0.5,0);\node[inner sep=0] (corr_text) at (1.6,0.0) {normal};
+       
+    \draw (0,2) -- (0.5,2);\node[inner sep=0] (corr_text) at (1.6,2.0) {1-sigma};
+       
+    \draw (0,4) -- (0.5,4);\node[inner sep=0] (corr_text) at (1.6,4.0) {2-sigma};
+       
+    \draw (0,6) -- (0.5,6);\node[inner sep=0] (corr_text) at (1.6,6.0) {3-sigma};
+       
+    \draw (0,8) -- (0.5,8);\node[inner sep=0] (corr_text) at (1.6,8.0) {4-sigma};
+      
+
+  \end{tikzpicture}
+  \end{document}
