@@ -191,7 +191,7 @@ EOAD: 379</code></pre>
 <p>Parietal lobe: postcentral gyrus, supramarginal gyrus, superior parietal, inferior parietal, percuneus</p>
 <p>Occipital lobe: lingual gyrus, pericalcarine cortex, cuneus cortex, lateral occipital cortex</p>
 <p>Cingulate (grouped into the above): rostral anterior (frontal), caudal anterior (frontal), posterior (parietal), isthmus (parietal)</p>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="74">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create dict to map parcellations to lobar ROI</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lobe_dict <span class="op">=</span> {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">'L_MTL'</span>: [<span class="st">'L_entorhinal'</span>,<span class="st">'L_amygdala'</span>,<span class="st">'L_hippocampus'</span> ],</span>
@@ -227,9 +227,11 @@ EOAD: 379</code></pre>
 <span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># use this to subset data for correct ordering!</span></span>
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>lobes <span class="op">=</span> [<span class="st">'L_MTL'</span>, <span class="st">'R_MTL'</span>, <span class="st">'L_temporal'</span>, <span class="st">'R_temporal'</span>, <span class="st">'L_frontal'</span>, <span class="st">'R_frontal'</span>, </span>
 <span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>         <span class="st">'L_occipital'</span>, <span class="st">'R_occipital'</span>,<span class="st">'L_parietal'</span>, <span class="st">'R_parietal'</span> ]</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>dat[<span class="st">'lobe'</span>] <span class="op">=</span> dat[<span class="st">'roi'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> roi: <span class="bu">next</span>((lobe <span class="cf">for</span> lobe, regions <span class="kw">in</span> lobe_dict.items() <span class="cf">if</span> roi <span class="kw">in</span> regions), <span class="va">None</span>))</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>dat.sort_values(<span class="st">'subj'</span>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>parcellations <span class="op">=</span> dat.roi.unique().tolist()</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>dat[<span class="st">'lobe'</span>] <span class="op">=</span> dat[<span class="st">'roi'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> roi: <span class="bu">next</span>((lobe <span class="cf">for</span> lobe, regions <span class="kw">in</span> lobe_dict.items() <span class="cf">if</span> roi <span class="kw">in</span> regions), <span class="va">None</span>))</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>dat[dat.lobe.isnull()].roi.unique()</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>dat.sort_values(<span class="st">'subj'</span>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="74">
 <div>
 
 
@@ -1092,6 +1094,363 @@ Silhouette Score for Agglomerative clustering: 0.23897107412243437</code></pre>
 <section id="cluster-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="cluster-visualization">Cluster visualization</h2>
 <p>tau topography, using the brainpainter library https://github.com/razvanmarinescu/brain-coloring</p>
+<p>or https://colab.research.google.com/drive/1qazM2eKGj18eXmu_IVH8HaAWyR9c8IY5#scrollTo=dJVL7DzKNK3Y</p>
+<div class="cell" data-execution_count="126">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>suvr_eoad_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>suvr_dat, columns<span class="op">=</span>lobes</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>suvr_eoad_df[<span class="st">'kmm_lab'</span>] <span class="op">=</span> gmm_eoad_df[<span class="st">'kmm_lab'</span>]</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>suvr_eoad_df[<span class="st">'agg_lab'</span>] <span class="op">=</span> gmm_eoad_df[<span class="st">'agg_lab'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="127">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">#input prep: calculate the mean SUVRs for each ROI  </span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>meltroi <span class="op">=</span> suvr_eoad_df.melt(id_vars <span class="op">=</span> [<span class="st">'kmm_lab'</span>,<span class="st">'agg_lab'</span>], value_vars <span class="op">=</span> lobes,var_name<span class="op">=</span><span class="st">'ROI'</span>,value_name <span class="op">=</span> <span class="st">'suvr'</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>melted <span class="op">=</span> meltroi.melt(id_vars <span class="op">=</span> [<span class="st">'ROI'</span>,<span class="st">'suvr'</span>], value_vars <span class="op">=</span> [<span class="st">'kmm_lab'</span>,<span class="st">'agg_lab'</span>],var_name<span class="op">=</span><span class="st">'alg'</span>,value_name <span class="op">=</span> <span class="st">'subtype'</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> melted.groupby([<span class="st">'ROI'</span>,<span class="st">'alg'</span>,<span class="st">'subtype'</span>]).agg(np.mean).reset_index()</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>means[<span class="st">'subtype'</span>] <span class="op">=</span> means[<span class="st">'subtype'</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>means[<span class="st">'alg'</span>] <span class="op">=</span> means[<span class="st">'alg'</span>].<span class="bu">str</span>[:<span class="dv">2</span>]</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>means[<span class="st">'cluster'</span>] <span class="op">=</span> means[<span class="st">'alg'</span>] <span class="op">+</span> <span class="st">'_'</span> <span class="op">+</span> means[<span class="st">'subtype'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>means.drop([<span class="st">'alg'</span>,<span class="st">'subtype'</span>],axis<span class="op">=</span><span class="dv">1</span>,inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>means.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="127">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ROI</th>
+<th data-quarto-table-cell-role="th">suvr</th>
+<th data-quarto-table-cell-role="th">cluster</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>L_MTL</td>
+<td>1.568772</td>
+<td>ag_1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>L_MTL</td>
+<td>1.511257</td>
+<td>ag_2.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="136">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#assign the same value to all parcellations belonging to that lobar ROI for coloring</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>dfs <span class="op">=</span> []</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> means.cluster.unique():</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    rdf <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>np.nan,index<span class="op">=</span>[<span class="dv">0</span>],columns<span class="op">=</span>parcellations <span class="op">+</span> [<span class="st">'cluster'</span>])</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    rdf[<span class="st">'cluster'</span>] <span class="op">=</span> c</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> lobe, par <span class="kw">in</span> lobe_dict.items():</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        rdf[par] <span class="op">=</span> means[(means[<span class="st">'ROI'</span>] <span class="op">==</span> lobe) <span class="op">&amp;</span> (means[<span class="st">'cluster'</span>] <span class="op">==</span> c)][<span class="st">'suvr'</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    dfs.append(rdf)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>paintdf <span class="op">=</span> pd.concat(dfs)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>paintdf <span class="op">=</span> paintdf.dropna(axis<span class="op">=</span><span class="dv">1</span>) <span class="co">#drop not included parcellation</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co">#paintdf.set_index('cluster').reset_index()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="137">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rename to match the DK template in the library</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>cnames <span class="op">=</span> <span class="bu">list</span>(paintdf.columns)[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>paintdf.columns <span class="op">=</span> [n.replace(<span class="st">'R_'</span>, <span class="st">'Right-'</span>).replace(<span class="st">'L_'</span>, <span class="st">'Left-'</span>) <span class="cf">for</span> n <span class="kw">in</span> cnames] <span class="op">+</span> [<span class="st">'Image-name-unique'</span>]</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reorder column so image name unique is the first one</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>paintdf <span class="op">=</span> paintdf[[<span class="st">'Image-name-unique'</span>]<span class="op">+</span>[n.replace(<span class="st">'R_'</span>, <span class="st">'Right-'</span>).replace(<span class="st">'L_'</span>, <span class="st">'Left-'</span>) <span class="cf">for</span> n <span class="kw">in</span> cnames]]</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">#paintdf.reset_index(drop=True, inplace=True)</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co">#paintdf[notadded] = 0</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>paintdf.to_csv(<span class="st">'DK_myexperiment.csv'</span>,mode <span class="op">=</span> <span class="st">'w'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>paintdf </span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="137">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Image-name-unique</th>
+<th data-quarto-table-cell-role="th">Left-amygdala</th>
+<th data-quarto-table-cell-role="th">Left-caudalanteriorcingulate</th>
+<th data-quarto-table-cell-role="th">Left-caudalmiddlefrontal</th>
+<th data-quarto-table-cell-role="th">Left-cuneus</th>
+<th data-quarto-table-cell-role="th">Left-entorhinal</th>
+<th data-quarto-table-cell-role="th">Left-fusiform</th>
+<th data-quarto-table-cell-role="th">Left-hippocampus</th>
+<th data-quarto-table-cell-role="th">Left-inferiorparietal</th>
+<th data-quarto-table-cell-role="th">Left-inferiortemporal</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">Right-posteriorcingulate</th>
+<th data-quarto-table-cell-role="th">Right-precentral</th>
+<th data-quarto-table-cell-role="th">Right-precuneus</th>
+<th data-quarto-table-cell-role="th">Right-rostralanteriorcingulate</th>
+<th data-quarto-table-cell-role="th">Right-rostralmiddlefrontal</th>
+<th data-quarto-table-cell-role="th">Right-superiorfrontal</th>
+<th data-quarto-table-cell-role="th">Right-superiorparietal</th>
+<th data-quarto-table-cell-role="th">Right-superiortemporal</th>
+<th data-quarto-table-cell-role="th">Right-supramarginal</th>
+<th data-quarto-table-cell-role="th">Right-transversetemporal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>ag_1.0</td>
+<td>1.568772</td>
+<td>1.599189</td>
+<td>1.599189</td>
+<td>1.699427</td>
+<td>1.568772</td>
+<td>1.934552</td>
+<td>1.568772</td>
+<td>1.943188</td>
+<td>1.934552</td>
+<td>...</td>
+<td>1.936692</td>
+<td>1.575491</td>
+<td>1.936692</td>
+<td>1.575491</td>
+<td>1.575491</td>
+<td>1.575491</td>
+<td>1.936692</td>
+<td>1.901408</td>
+<td>1.936692</td>
+<td>1.901408</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>ag_2.0</td>
+<td>1.511257</td>
+<td>1.510695</td>
+<td>1.510695</td>
+<td>1.674535</td>
+<td>1.511257</td>
+<td>1.828494</td>
+<td>1.511257</td>
+<td>1.853926</td>
+<td>1.828494</td>
+<td>...</td>
+<td>1.825638</td>
+<td>1.474102</td>
+<td>1.825638</td>
+<td>1.474102</td>
+<td>1.474102</td>
+<td>1.474102</td>
+<td>1.825638</td>
+<td>1.773218</td>
+<td>1.825638</td>
+<td>1.773218</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>ag_3.0</td>
+<td>1.443430</td>
+<td>1.508215</td>
+<td>1.508215</td>
+<td>1.599288</td>
+<td>1.443430</td>
+<td>1.764720</td>
+<td>1.443430</td>
+<td>1.786024</td>
+<td>1.764720</td>
+<td>...</td>
+<td>1.743674</td>
+<td>1.460125</td>
+<td>1.743674</td>
+<td>1.460125</td>
+<td>1.460125</td>
+<td>1.460125</td>
+<td>1.743674</td>
+<td>1.710483</td>
+<td>1.743674</td>
+<td>1.710483</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>ag_4.0</td>
+<td>1.517451</td>
+<td>1.569511</td>
+<td>1.569511</td>
+<td>1.715817</td>
+<td>1.517451</td>
+<td>1.847143</td>
+<td>1.517451</td>
+<td>1.907925</td>
+<td>1.847143</td>
+<td>...</td>
+<td>1.905423</td>
+<td>1.552194</td>
+<td>1.905423</td>
+<td>1.552194</td>
+<td>1.552194</td>
+<td>1.552194</td>
+<td>1.905423</td>
+<td>1.835311</td>
+<td>1.905423</td>
+<td>1.835311</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>ag_5.0</td>
+<td>1.598464</td>
+<td>1.598770</td>
+<td>1.598770</td>
+<td>1.818027</td>
+<td>1.598464</td>
+<td>1.946118</td>
+<td>1.598464</td>
+<td>2.046344</td>
+<td>1.946118</td>
+<td>...</td>
+<td>2.015627</td>
+<td>1.568092</td>
+<td>2.015627</td>
+<td>1.568092</td>
+<td>1.568092</td>
+<td>1.568092</td>
+<td>2.015627</td>
+<td>1.905724</td>
+<td>2.015627</td>
+<td>1.905724</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>km_1.0</td>
+<td>1.509695</td>
+<td>1.555006</td>
+<td>1.555006</td>
+<td>1.629627</td>
+<td>1.509695</td>
+<td>1.858636</td>
+<td>1.509695</td>
+<td>1.865069</td>
+<td>1.858636</td>
+<td>...</td>
+<td>1.854680</td>
+<td>1.526102</td>
+<td>1.854680</td>
+<td>1.526102</td>
+<td>1.526102</td>
+<td>1.526102</td>
+<td>1.854680</td>
+<td>1.818034</td>
+<td>1.854680</td>
+<td>1.818034</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>km_2.0</td>
+<td>1.583657</td>
+<td>1.583159</td>
+<td>1.583159</td>
+<td>1.785705</td>
+<td>1.583657</td>
+<td>1.921760</td>
+<td>1.583657</td>
+<td>1.998851</td>
+<td>1.921760</td>
+<td>...</td>
+<td>1.965613</td>
+<td>1.558713</td>
+<td>1.965613</td>
+<td>1.558713</td>
+<td>1.558713</td>
+<td>1.558713</td>
+<td>1.965613</td>
+<td>1.878164</td>
+<td>1.965613</td>
+<td>1.878164</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>km_3.0</td>
+<td>1.520596</td>
+<td>1.568092</td>
+<td>1.568092</td>
+<td>1.653172</td>
+<td>1.520596</td>
+<td>1.864403</td>
+<td>1.520596</td>
+<td>1.864662</td>
+<td>1.864403</td>
+<td>...</td>
+<td>1.849487</td>
+<td>1.545892</td>
+<td>1.849487</td>
+<td>1.545892</td>
+<td>1.545892</td>
+<td>1.545892</td>
+<td>1.849487</td>
+<td>1.840347</td>
+<td>1.849487</td>
+<td>1.840347</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>km_4.0</td>
+<td>1.494984</td>
+<td>1.491111</td>
+<td>1.491111</td>
+<td>1.652116</td>
+<td>1.494984</td>
+<td>1.801807</td>
+<td>1.494984</td>
+<td>1.831310</td>
+<td>1.801807</td>
+<td>...</td>
+<td>1.782145</td>
+<td>1.438061</td>
+<td>1.782145</td>
+<td>1.438061</td>
+<td>1.438061</td>
+<td>1.438061</td>
+<td>1.782145</td>
+<td>1.724096</td>
+<td>1.782145</td>
+<td>1.724096</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>km_5.0</td>
+<td>1.534213</td>
+<td>1.563726</td>
+<td>1.563726</td>
+<td>1.754020</td>
+<td>1.534213</td>
+<td>1.865443</td>
+<td>1.534213</td>
+<td>1.934443</td>
+<td>1.865443</td>
+<td>...</td>
+<td>1.930100</td>
+<td>1.540700</td>
+<td>1.930100</td>
+<td>1.540700</td>
+<td>1.540700</td>
+<td>1.540700</td>
+<td>1.930100</td>
+<td>1.847208</td>
+<td>1.930100</td>
+<td>1.847208</td>
+</tr>
+</tbody>
+</table>
+
+<p>10 rows × 65 columns</p>
+</div>
+</div>
+</div>
+<p>An example graph showing: for subtype 1 (Above) and 2 (Below) derived from agglomerative clustering, the mean z-score values in different ROI. (ignore above code where the variable is set to suvr)</p>
+<p>View: cortical top</p>
+<p>Color scale: white -&gt; yellow -&gt; orange -&gt; red 0 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; &gt;3</p>
+<p><img src="DK_output/top_Image_0.png" class="img-fluid" alt="Image"> <img src="DK_output/top_Image_1.png" class="img-fluid" alt="Image"></p>
 </section>
 </section>
 <section id="next-steps" class="level1">
@@ -1099,7 +1458,10 @@ Silhouette Score for Agglomerative clustering: 0.23897107412243437</code></pre>
 <p>1 Sensitivity analysis w/ varying ROI definition and standardization method</p>
 <p>2 Cluster characterization with other clinical/demographic variables</p>
 <p>3 Evaluate other unsuperivsed learning algorithms (e.g., Louvain’s method, mixture of experts, latent dirichlet allocation, non-negative matrix factorization among some other popular choices) and COMPARE derived clusters</p>
-<p>4 Dimensionality reduction? (t-SNE, UMAP, PCA, SOM)</p>
+<p>4 Dimensionality reduction? (t-SNE, UMAP, SOM)</p>
+</section>
+<section id="wide-to-long.-mean.-then-expand" class="level1">
+<h1>wide to long. mean. then expand</h1>
 </section>
 <section id="citations" class="level1">
 <h1>Citations</h1>
